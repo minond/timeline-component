@@ -3,6 +3,16 @@
 var DAY = 1000 * 60 * 60 * 24;
 
 /**
+ * @param {Number} multiplier
+ * @return {Function<*, Number>}
+ */
+function incremental_by_index(multiplier) {
+    return function (val, index) {
+        return index * multiplier;
+    };
+}
+
+/**
  * @param {Number} num
  * @return {String}
  */
@@ -89,7 +99,8 @@ $dates.enter().append('div')
             return days_between(start, date.date) / total_days * 100 + '%';
         })
     .transition()
-        .duration(500)
+        .delay(incremental_by_index(100))
+        .duration(800)
         .ease('exp-out')
         .style('transform', 'scale(1)')
 
