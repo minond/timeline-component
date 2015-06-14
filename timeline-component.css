@@ -1,5 +1,6 @@
 html[data-timeline-component-sample],
 html[data-timeline-component-sample] body {
+    background-color: #F9F6F2;
     box-sizing: border-box;
     height: 100%;
     margin: 0;
@@ -9,7 +10,7 @@ html[data-timeline-component-sample] body {
 html[data-timeline-component-sample] section {
     left: 50%;
     position: relative;
-    top: 50%;
+    top: 15%;
     transform: translate(-50%, -50%);
     width: 500px;
 }
