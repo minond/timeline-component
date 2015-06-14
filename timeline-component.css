@@ -31,12 +31,17 @@ html[data-timeline-component-sample] section {
 }
 
 [data-timeline-component] .day {
-    position: absolute;
+    background-color: rgb(210, 197, 197);
+    height: 10px;
     left: 0;
-    top: 0;
     opacity: 0;
+    position: absolute;
+    top: 0;
+    width: 1px;
+}
 
-      height: 10px;
-        width: 1px;
-          background-color: red;
+[data-timeline-component] .days {
+    left: 10px;
+    position: relative;
+    top: 25px;
 }

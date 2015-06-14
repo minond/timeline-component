@@ -4,9 +4,25 @@
 
 var DAY = 1000 * 60 * 60 * 24;
 
+/**
+ * @param {Date} start
+ * @param {Number} total_days
+ * @return {Function<Date>}
+ */
 function day_offset_from(start, total_days) {
     return function (date) {
         return percent(days_between(start, date.date) / total_days * 100);
+    };
+}
+
+/**
+ * @param {Number} num
+ * @param {Function<*>}
+ * @return {Function<*>}
+ */
+function then_add(num, getter) {
+    return function (val) {
+        return getter.apply(null, arguments) + num;
     };
 }
 
@@ -102,7 +118,7 @@ var start = first(dates_dataset).date,
 
 var days_dataset = [];
 
-for (var i = 0; i < total_days; i++) {
+for (var i = 0; i <= total_days; i++) {
     days_dataset.push({
         offset: i,
         date: new Date(start.valueOf() + i * DAY)
@@ -123,10 +139,12 @@ $dates.enter().append('div')
     .attr('class', 'date')
     .style('transform', 'scale(0)')
     .style('left', day_offset_from(start, total_days))
+    .style('top', px(-100))
     .transition()
-        .delay(incremental_by_index(100))
+        .delay(then_add(700, incremental_by_index(100)))
         .duration(800)
         .ease('exp-out')
+        .style('top', px(-1))
         .style('transform', 'scale(1)');
 
 var $days = $timeline
