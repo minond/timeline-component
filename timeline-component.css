@@ -1,0 +1,26 @@
+html,
+body {
+    box-sizing: border-box;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+[data-timeline-component] {
+    left: 50%;
+    position: relative;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+}
+
+[data-timeline-component] .date {
+    background-color: rgba(250, 209, 121, 0.71);
+    border-radius: 50%;
+    border: 1px solid rgb(147, 137, 161);
+    height: 20px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 20px;
+}
