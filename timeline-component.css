@@ -29,3 +29,14 @@ html[data-timeline-component-sample] section {
     top: 0;
     width: 20px;
 }
+
+[data-timeline-component] .day {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+
+      height: 10px;
+        width: 1px;
+          background-color: red;
+}

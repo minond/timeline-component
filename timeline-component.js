@@ -1,6 +1,14 @@
 'use strict';
 
+/* global d3 */
+
 var DAY = 1000 * 60 * 60 * 24;
+
+function day_offset_from(start, total_days) {
+    return function (date) {
+        return percent(days_between(start, date.date) / total_days * 100);
+    };
+}
 
 /**
  * @param {Number} multiplier
@@ -10,6 +18,14 @@ function incremental_by_index(multiplier) {
     return function (val, index) {
         return index * multiplier;
     };
+}
+
+/**
+ * @param {Number} num
+ * @return {String}
+ */
+function percent(num) {
+    return num + '%';
 }
 
 /**
@@ -65,7 +81,7 @@ function last(arr) {
     return arr[arr.length - 1];
 }
 
-var dates = [
+var dates_dataset = [
     {
         label: 'Registration',
         date: new Date('2015-06-20'),
@@ -80,28 +96,50 @@ var dates = [
     },
 ].sort(sorter('date'));
 
-var start = first(dates).date,
-    end = last(dates).date,
+var start = first(dates_dataset).date,
+    end = last(dates_dataset).date,
     total_days = days_between(start, end);
+
+var days_dataset = [];
+
+for (var i = 0; i < total_days; i++) {
+    days_dataset.push({
+        offset: i,
+        date: new Date(start.valueOf() + i * DAY)
+    });
+}
 
 var $timeline = d3.select('#timeline')
     .attr('data-timeline-component', true);
 
 var $dates = $timeline
-    .selectAll('.date', plucker('label'))
-    .data(dates)
+    .append('div')
+    .attr('class', 'dates')
+    .selectAll('.date')
+    .data(dates_dataset);
 
 $dates.enter().append('div')
+    .attr('data-date', plucker('date'))
     .attr('class', 'date')
-    .attr('title', plucker('label'))
     .style('transform', 'scale(0)')
-        .style('left', function (date) {
-            return days_between(start, date.date) / total_days * 100 + '%';
-        })
+    .style('left', day_offset_from(start, total_days))
     .transition()
         .delay(incremental_by_index(100))
         .duration(800)
         .ease('exp-out')
-        .style('transform', 'scale(1)')
+        .style('transform', 'scale(1)');
 
-$dates.exit().remove();
+var $days = $timeline
+    .append('div')
+    .attr('class', 'days')
+    .selectAll('.day')
+    .data(days_dataset);
+
+$days.enter().append('div')
+    .attr('data-date', plucker('date'))
+    .attr('class', 'day')
+    .transition()
+        .delay(incremental_by_index(10))
+        .duration(500)
+        .style('opacity', 1)
+        .style('left', day_offset_from(start, total_days));
