@@ -112,6 +112,26 @@ function last(arr) {
     return arr[arr.length - 1];
 }
 
+/**
+ * this = Node
+ * @param {Object} day
+ */
+function show_day_info(day) {
+    d3.select(this)
+        .classed('active', true)
+        .style('height', px(45));
+}
+
+/**
+ * this = Node
+ * @param {Object} day
+ */
+function hide_day_info(day) {
+    d3.select(this)
+        .classed('active', false)
+        .style('height', px(10));
+}
+
 var dates_dataset = [
     {
         label: 'Registration',
@@ -145,13 +165,13 @@ var $timeline = d3.select('#timeline')
 
 var $dates = $timeline
     .append('div')
-    .attr('class', 'dates')
+    .classed('dates', true)
     .selectAll('.date')
     .data(dates_dataset);
 
 $dates.enter().append('div')
     .attr('data-date', plucker('date'))
-    .attr('class', 'date')
+    .classed('date', true)
     .style('transform', 'scale(0)')
     .style('left', percent(day_offset_from(start, total_days)))
     .style('top', px(-100))
@@ -164,13 +184,16 @@ $dates.enter().append('div')
 
 var $days = $timeline
     .append('div')
-    .attr('class', 'days')
+    .classed('days', true)
     .selectAll('.day')
     .data(days_dataset);
 
 $days.enter().append('div')
     .attr('data-date', plucker('date'))
-    .attr('class', 'day')
+    .classed('day', true)
+    .style('height', px(10))
+    .on('mouseover', show_day_info)
+    .on('mouseout', hide_day_info)
     .transition()
         .delay(incremental_by_index(10))
         .duration(500)
