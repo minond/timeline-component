@@ -23,6 +23,7 @@ html[data-timeline-component-sample] section {
     background-color: rgba(250, 209, 121, 0.71);
     border-radius: 50%;
     border: 1px solid rgb(147, 137, 161);
+    cursor: pointer;
     height: 20px;
     left: 0;
     position: absolute;
@@ -32,12 +33,26 @@ html[data-timeline-component-sample] section {
 
 [data-timeline-component] .day {
     background-color: rgb(210, 197, 197);
+    cursor: pointer;
     height: 10px;
     left: 0;
     opacity: 0;
     position: absolute;
     top: 0;
+    transition: height .3s;
     width: 1px;
+}
+
+[data-timeline-component] .day:hover {
+    height: 45px;
+}
+
+[data-timeline-component] .day::before {
+    content: "\00a0";
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    width: 20px;
 }
 
 [data-timeline-component] .days {
