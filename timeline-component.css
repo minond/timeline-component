@@ -50,13 +50,18 @@ html[data-timeline-component-sample] section {
 [data-timeline-component] .day::before {
     content: "\00a0";
     display: inline-block;
+    left: -7px;
     position: absolute;
     top: 0;
-    width: 20px;
+    width: 17px;
 }
 
 [data-timeline-component] .days {
-    left: 10px;
     position: relative;
     top: 25px;
+}
+
+[data-timeline-component] .dates {
+    left: -10px;
+    position: relative;
 }

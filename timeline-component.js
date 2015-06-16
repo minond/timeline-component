@@ -115,15 +115,15 @@ function last(arr) {
 var dates_dataset = [
     {
         label: 'Registration',
-        date: new Date('2015-06-20'),
+        date: new Date('2015-06-20 00:00:00'),
     },
     {
         label: 'Launch',
-        date: new Date('2015-06-01'),
+        date: new Date('2015-06-01 00:00:00'),
     },
     {
         label: 'Judging',
-        date: new Date('2015-06-29'),
+        date: new Date('2015-06-29 00:00:00'),
     },
 ].sort(sorter('date'));
 
