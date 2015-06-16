@@ -11,7 +11,7 @@ var DAY = 1000 * 60 * 60 * 24;
  */
 function day_offset_from(start, total_days) {
     return function (date) {
-        return percent(days_between(start, date.date) / total_days * 100);
+        return days_between(start, date.date) / total_days * 100;
     };
 }
 
@@ -27,6 +27,21 @@ function then_add(num, getter) {
 }
 
 /**
+ * @param {Function|Number} base
+ * @param {String} append
+ * @return {Function|String}
+ */
+function then_append(base, append) {
+    if (base instanceof Function) {
+        return function () {
+            return base.apply(null, arguments) + append;
+        }
+    } else {
+        return base + append;
+    }
+}
+
+/**
  * @param {Number} multiplier
  * @return {Function<*, Number>}
  */
@@ -37,19 +52,19 @@ function incremental_by_index(multiplier) {
 }
 
 /**
- * @param {Number} num
+ * @param {Function|Number} num
  * @return {String}
  */
 function percent(num) {
-    return num + '%';
+    return then_append(num, '%');
 }
 
 /**
- * @param {Number} num
+ * @param {Function|Number} num
  * @return {String}
  */
 function px(num) {
-    return num + 'px';
+    return then_append(num, 'px');
 }
 
 /**
@@ -138,7 +153,7 @@ $dates.enter().append('div')
     .attr('data-date', plucker('date'))
     .attr('class', 'date')
     .style('transform', 'scale(0)')
-    .style('left', day_offset_from(start, total_days))
+    .style('left', percent(day_offset_from(start, total_days)))
     .style('top', px(-100))
     .transition()
         .delay(then_add(700, incremental_by_index(100)))
@@ -160,4 +175,4 @@ $days.enter().append('div')
         .delay(incremental_by_index(10))
         .duration(500)
         .style('opacity', 1)
-        .style('left', day_offset_from(start, total_days));
+        .style('left', percent(day_offset_from(start, total_days)));
