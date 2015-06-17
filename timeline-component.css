@@ -45,6 +45,7 @@ html[data-timeline-component-sample] section {
 [data-timeline-component] .day::before {
     content: "\00a0";
     display: inline-block;
+    height: 30px;
     left: -7px;
     position: absolute;
     top: 0;

@@ -157,7 +157,7 @@ function hide_day_info(day) {
  * @return {d3}
  */
 function sticky_day_info(day) {
-    var $day;
+    var $day, undo = active_sticky_day === this;
 
     if (active_sticky_day) {
         d3.select(active_sticky_day).classed(CLASS_DAY_ACTIVE_STICKY, false);
@@ -165,9 +165,11 @@ function sticky_day_info(day) {
         active_sticky_day = null;
     }
 
-    $day = show_day_info.call(this, day);
-    $day.classed(CLASS_DAY_ACTIVE_STICKY, true);
-    active_sticky_day = this;
+    if (!undo) {
+        $day = show_day_info.call(this, day);
+        $day.classed(CLASS_DAY_ACTIVE_STICKY, true);
+        active_sticky_day = this;
+    }
 
     return $day;
 }
