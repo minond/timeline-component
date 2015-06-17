@@ -4,6 +4,13 @@
 
 var DAY = 1000 * 60 * 60 * 24;
 
+var HEIGHT_DAY = 10;
+
+var CLASS_DAY_ACTIVE = 'active',
+    CLASS_DAY_ACTIVE_STICKY = 'sticky';
+
+var active_sticky_day;
+
 /**
  * @param {Date} start
  * @param {Number} total_days
@@ -35,7 +42,7 @@ function then_append(base, append) {
     if (base instanceof Function) {
         return function () {
             return base.apply(null, arguments) + append;
-        }
+        };
     } else {
         return base + append;
     }
@@ -115,21 +122,54 @@ function last(arr) {
 /**
  * this = Node
  * @param {Object} day
+ * @return {d3}
  */
 function show_day_info(day) {
-    d3.select(this)
-        .classed('active', true)
-        .style('height', px(45));
+    var $day = d3.select(this);
+
+    if (!active_sticky_day) {
+        $day.classed(CLASS_DAY_ACTIVE, true)
+            .style('height', px(45));
+    }
+
+    return $day;
 }
 
 /**
  * this = Node
  * @param {Object} day
+ * @return {d3}
  */
 function hide_day_info(day) {
-    d3.select(this)
-        .classed('active', false)
-        .style('height', px(10));
+    var $day = d3.select(this);
+
+    if (!$day.classed(CLASS_DAY_ACTIVE_STICKY)) {
+        $day.classed(CLASS_DAY_ACTIVE, false)
+            .style('height', px(HEIGHT_DAY));
+    }
+
+    return $day;
+}
+
+/**
+ * this = Node
+ * @param {Object} day
+ * @return {d3}
+ */
+function sticky_day_info(day) {
+    var $day;
+
+    if (active_sticky_day) {
+        d3.select(active_sticky_day).classed(CLASS_DAY_ACTIVE_STICKY, false);
+        hide_day_info.call(active_sticky_day);
+        active_sticky_day = null;
+    }
+
+    $day = show_day_info.call(this, day);
+    $day.classed(CLASS_DAY_ACTIVE_STICKY, true);
+    active_sticky_day = this;
+
+    return $day;
 }
 
 var dates_dataset = [
@@ -191,9 +231,10 @@ var $days = $timeline
 $days.enter().append('div')
     .attr('data-date', plucker('date'))
     .classed('day', true)
-    .style('height', px(10))
+    .style('height', px(HEIGHT_DAY))
     .on('mouseover', show_day_info)
     .on('mouseout', hide_day_info)
+    .on('click', sticky_day_info)
     .transition()
         .delay(incremental_by_index(10))
         .duration(500)
